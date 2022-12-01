@@ -17,6 +17,7 @@ import pytest
         ("http://blah/has_url.jpg", True),
         ("https://blah/has_url.jpeg", True),
         ("https://blah/has_url.gif", True),
+        ("https://blah/has_url.webp", True),
         (" https://blah/has_url.gif ", True),
         ("https://blah/has_url.mp3", False),
     ),
