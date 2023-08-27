@@ -1,7 +1,8 @@
-from setuptools import setup
 import os
 
-VERSION = "0.1"
+from setuptools import setup
+
+VERSION = "0.2"
 
 
 def get_long_description():
@@ -33,6 +34,6 @@ setup(
     packages=["datasette_render_image_tags"],
     entry_points={"datasette": ["render_image_tags = datasette_render_image_tags"]},
     install_requires=["datasette"],
-    extras_require={"test": ["pytest", "pytest-asyncio"]},
+    extras_require={"test": ["pytest", "pytest-asyncio", "sqlite-utils"]},
     python_requires=">=3.7",
 )
