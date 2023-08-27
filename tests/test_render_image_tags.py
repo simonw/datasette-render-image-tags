@@ -60,26 +60,16 @@ async def test_img_is_rendered(db_path, url, expect_img):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "url",
-    (
-        ("https://blah/has_url.png"),
-        ("http://blah/has_url.jpg"),
-        ("https://blah/has_url.jpeg"),
-        ("https://blah/has_url.gif"),
-        (" https://blah/has_url.gif "),
-    ),
-)
-async def test_config_changes_size(db_path, url):
+async def test_config_max_width_height(db_path):
+    config = dict(max_width=400, max_height=300)
+    url = "https://blah/has_url.png"
     db = sqlite_utils.Database(db_path)
     db["images"].upsert(dict(id=1, url=url), pk="id")
     datasette = Datasette(
         [db_path],
         metadata={
             "databases": {"test": {"tables": {"images": {"title": "Some images"}}}},
-            "plugins": {
-                "datasette-render-image-tags": dict(max_width=400, max_height=300)
-            },
+            "plugins": {"datasette-render-image-tags": config},
         },
     )
 
@@ -87,9 +77,36 @@ async def test_config_changes_size(db_path, url):
     assert response.status_code == 200
 
     html = response.text
-    style = "display: block;margin: 0 auto;max-width: 400px;max-height: 300px;"
+    style = f"display: block;margin: 0 auto;max-width: {config['max_width']}px;max-height: {config['max_height']}px;"
     expected = f'<img src="{url.strip()}" loading="lazy" style="{style}">'
     assert expected in html
+
+
+@pytest.mark.asyncio
+async def test_config_fixed_width(db_path):
+    url = "https://blah/has_url.png"
+    config = dict(fixed_width=400)
+    db = sqlite_utils.Database(db_path)
+    db["images"].upsert(dict(id=1, url=url), pk="id")
+    datasette = Datasette(
+        [db_path],
+        metadata={
+            "databases": {"test": {"tables": {"images": {"title": "Some images"}}}},
+            "plugins": {"datasette-render-image-tags": config},
+        },
+    )
+
+    response = await datasette.client.get("/test/images")
+    assert response.status_code == 200
+
+    html = response.text
+    expected = (
+        f'<img src="{url.strip()}" width="{config["fixed_width"]}" loading="lazy">'
+    )
+    assert expected in html
+
+
+# f'<img src="{escape(value)}" width="{fixed_width}" loading="lazy">'
 
 
 if __name__ == "__main__":
