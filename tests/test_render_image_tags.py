@@ -24,7 +24,7 @@ import pytest
 async def test_mp3_audio(value, expect_img):
     datasette = Datasette(memory=True)
     response = await datasette.client.get(
-        "/_memory?"
+        "/_memory/-/query?"
         + urlencode(
             {
                 "sql": "select :value as value",

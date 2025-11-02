@@ -32,7 +32,7 @@ setup(
     version=VERSION,
     packages=["datasette_render_image_tags"],
     entry_points={"datasette": ["render_image_tags = datasette_render_image_tags"]},
-    install_requires=["datasette"],
+    install_requires=["datasette>=1.0a14"],
     extras_require={"test": ["pytest", "pytest-asyncio"]},
     python_requires=">=3.7",
 )
