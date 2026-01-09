@@ -15,7 +15,7 @@ Install this plugin in the same environment as Datasette.
 
 ## Usage
 
-Once installed, any cells contaning a URL that ends with `.png` or `.jpg` or `.jpeg` or `.gif` will be rendered using an image tag, with a width of 200px.
+Once installed, any cells contaning a URL that ends with `.png` or `.jpg` or `.jpeg`, `webp` or `.gif` will be rendered using an image tag, with a width of 200px.
 
 ## Development
 

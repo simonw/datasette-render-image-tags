@@ -1,7 +1,7 @@
 from datasette import hookimpl
 from markupsafe import Markup, escape
 
-ENDS = (".jpg", ".jpeg", ".png", ".gif")
+ENDS = (".jpg", ".jpeg", ".png", ".gif", ".webp")
 
 
 @hookimpl
